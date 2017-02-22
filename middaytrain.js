@@ -81,7 +81,7 @@ function onData(error, streamEvent) {
             if (diceRoll == 0) {
             	twitter.statuses(
              	   "update",
-             	  {"status": cities[i - 1].city + ", " + cities[i - 1].state + " is a great place to visit 1, @" + screenName},
+             	  {"status": cities[i - 1].city + ", " + cities[i - 1].state + " is a great place to visit, @" + screenName},
             	   accessToken,
              	  tokenSecret,
              	  function (err, data, resp) { console.log(err); }
@@ -89,7 +89,7 @@ function onData(error, streamEvent) {
             } else if (diceRoll == 1) {
             	twitter.statuses(
              	   "update",
-             	  {"status": cities[i - 1].city + ", " + cities[i - 1].state + " is a great place to visit 2, @" + screenName},
+             	  {"status": cities[i - 1].city + ", " + cities[i - 1].state + " is a fun place to visit, @" + screenName},
             	   accessToken,
              	  tokenSecret,
              	  function (err, data, resp) { console.log(err); }
@@ -97,7 +97,7 @@ function onData(error, streamEvent) {
             } else if (diceRoll == 2) {
             	twitter.statuses(
              	   "update",
-             	  {"status": cities[i - 1].city + ", " + cities[i - 1].state + " is a great place to visit 3, @" + screenName},
+             	  {"status": cities[i - 1].city + ", " + cities[i - 1].state + " is an interesting place to visit, @" + screenName},
             	   accessToken,
              	  tokenSecret,
              	  function (err, data, resp) { console.log(err); }
