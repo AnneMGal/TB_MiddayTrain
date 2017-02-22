@@ -10,15 +10,13 @@ var i = parseInt(counterBuffer.toString());
 //var counter = parseInt(fs.readFileSync("counter.txt").toString());
 
 
-// second account
+// verifications and tokens
 var secrets = JSON.parse(fs.readFileSync("../../__secrets/midday_train.secrets.json"));
 
 var cKey = secrets["cKey"];
 var cSecret = secrets["cSecret"];
 var accessToken = secrets["accessToken"];
 var tokenSecret = secrets["tokenSecret"];
-
-
 var myScreenName = "midday_train"
 
 // create a twitter API object
@@ -29,7 +27,7 @@ var twitter = new TwitterAPI({
 // register onData() as handler for getStream() events
 twitter.getStream("user", {}, accessToken, tokenSecret, onData);    
 
-    
+// parsing JSON file    
 var citiesData = JSON.parse(fs.readFileSync("us_cities.json"));
 var cities = citiesData["cities"];
 var states = citiesData["state"];
@@ -44,7 +42,6 @@ function onData(error, streamEvent) {
     // a few different cases.
     // case 1: if the object is empty, simply return
     if (Object.keys(streamEvent).length === 0) {
-
         return;
     }
 
@@ -56,7 +53,7 @@ function onData(error, streamEvent) {
             console.log("followed by @" + sourceHandle);
             twitter.statuses(
                 "update",
-               {"status": "you are welcome to tag along, @" + sourceHandle},
+               {"status": "You are welcome to tag along, @" + sourceHandle + "!"},
                accessToken,
                tokenSecret,
                function (err, data, resp) { console.log(err); }
@@ -70,13 +67,12 @@ function onData(error, streamEvent) {
                     " favorited by @",
                     screenName);
             
-            
             var MAX_DICE = 3;
             
             // a random int between [0 and MAX_DICE]
             var diceRoll = Math.floor(Math.random()*MAX_DICE);
             
-            console.log("rolled: " + diceRoll.toString());
+            console.log("rolled fave: " + diceRoll.toString());
             
             if (diceRoll == 0) {
             	twitter.statuses(
@@ -89,7 +85,7 @@ function onData(error, streamEvent) {
             } else if (diceRoll == 1) {
             	twitter.statuses(
              	   "update",
-             	  {"status": cities[i - 1].city + ", " + cities[i - 1].state + " is a fun place to visit, @" + screenName},
+             	  {"status": cities[i - 1].city + ", " + cities[i - 1].state + " is rich in history, @" + screenName},
             	   accessToken,
              	  tokenSecret,
              	  function (err, data, resp) { console.log(err); }
@@ -97,19 +93,14 @@ function onData(error, streamEvent) {
             } else if (diceRoll == 2) {
             	twitter.statuses(
              	   "update",
-             	  {"status": cities[i - 1].city + ", " + cities[i - 1].state + " is an interesting place to visit, @" + screenName},
+             	  {"status": "Can't wait to try " + cities[i - 1].city + "'s local cuisine, @" + screenName},
             	   accessToken,
              	  tokenSecret,
              	  function (err, data, resp) { console.log(err); }
             	); 
             } else {
-            	console.log("dice error");
-            }
-            
-            
-            
-            
-            
+            	console.log("dice error fave");
+            }           
         }
     }
 
@@ -146,7 +137,7 @@ function onData(error, streamEvent) {
             twitter.statuses(
                 "update",
                 //{"status": "@" + tweeterHandle + "+diceRoll.toString+take lots of pictures!",
-               {"status": "@" + tweeterHandle + ", " + diceRoll.toString() + ", hey, hey",
+               {"status": "@" + tweeterHandle + " , I'll try to post " + diceRoll.toString() + " " + cities[i-1].city + " recommendations!",
                 "in_reply_to_status_id": tweetId},
                accessToken,
                tokenSecret,
@@ -165,30 +156,70 @@ function onData(error, streamEvent) {
 // tweet city destination
 function tweet_names() {
 
-	//var counterBuffer = fs.readFileSync("counter.txt");
-	//turning into integer
-	//var i = parseInt(counterBuffer.toString());
+	var MAX_DICE = 4;
 	
-	//var counter = parseInt(fs.readFileSync("counter.txt").toString());
+	// a random int between [0 and MAX_DICE]
+	var diceRoll = Math.floor(Math.random()*MAX_DICE);
+	
+	console.log("rolled name: " + diceRoll.toString());
+	
+	if (diceRoll == 0) {
+		twitter.statuses("update",
+			{"status": "Hello! Where are you headed? I am going to " + cities[i].city + ", " + cities[i].state + "."},
+			accessToken,
+			tokenSecret,
+			function(error, data, response) {
+				if (error) {
+					console.log("something went wrong: " + util.inspect(error));
+				}
+			}
+		);
 
-twitter.statuses("update",
-    {"status": "Hello. Where are you headed? I am going to " + cities[i].city + ", " + cities[i].state + "."},
-    accessToken,
-    tokenSecret,
-    function(error, data, response) {
-        if (error) {
-            console.log("something went wrong: " + util.inspect(error));
-        }
-    }
-);
+	} else if (diceRoll == 1) {
+		twitter.statuses("update",
+			{"status": "Hi! Heading to " + cities[i].city + ", " + cities[i].state + ". Any tips on navigating the city?"},
+			accessToken,
+			tokenSecret,
+			function(error, data, response) {
+				if (error) {
+					console.log("something went wrong: " + util.inspect(error));
+				}
+			}
+		);
+		
+	} else if (diceRoll == 2) {
+		twitter.statuses("update",
+			{"status": "Greetings! On my way to " + cities[i].city + ", " + cities[i].state + ". Any suggestions on places to go?"},
+			accessToken,
+			tokenSecret,
+			function(error, data, response) {
+				if (error) {
+					console.log("something went wrong: " + util.inspect(error));
+				}
+			}
+		);	
 
+	} else if (diceRoll == 3) {
+		twitter.statuses("update",
+			{"status": "Salutations! Going through " + cities[i].city + ", " + cities[i].state + ". It's supposed to be beautiful this time of year. Ever been?"},
+			accessToken,
+			tokenSecret,
+			function(error, data, response) {
+				if (error) {
+					console.log("something went wrong: " + util.inspect(error));
+				}
+			}
+		);
 
+	} else {
+		console.log("dice error names");
+	}
 
-		//console.log("sleeping");
-		//sleep.sleep(10);
-		i++;
-		var counterString = i.toString();
-		fs.writeFileSync("counter.txt", counterString, "utf8");
+	//console.log("sleeping");
+	//sleep.sleep(10);
+	i++;
+	var counterString = i.toString();
+	fs.writeFileSync("counter.txt", counterString, "utf8");
 
 	//}
 	
