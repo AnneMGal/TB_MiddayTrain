@@ -156,7 +156,7 @@ function onData(error, streamEvent) {
 // tweet city destination
 function tweet_names() {
 
-	var MAX_DICE = 4;
+	var MAX_DICE = 5;
 	
 	// a random int between [0 and MAX_DICE]
 	var diceRoll = Math.floor(Math.random()*MAX_DICE);
@@ -198,8 +198,20 @@ function tweet_names() {
 				}
 			}
 		);	
-
+			
 	} else if (diceRoll == 3) {
+		twitter.statuses("update",
+			{"status": "Passing through " + cities[i].city + ", " + cities[i].state + " now. I've got a long way to go."},
+			accessToken,
+			tokenSecret,
+			function(error, data, response) {
+				if (error) {
+					console.log("something went wrong: " + util.inspect(error));
+				}
+			}
+		);	
+		
+	} else if (diceRoll == 4) {
 		twitter.statuses("update",
 			{"status": "Salutations! Going through " + cities[i].city + ", " + cities[i].state + ". It's supposed to be beautiful this time of year. Ever been?"},
 			accessToken,
@@ -225,7 +237,6 @@ function tweet_names() {
 	
 
 }
-
 
 
 
